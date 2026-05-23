@@ -35,11 +35,12 @@ TP-OE-U4/
 ├── datos/
 │   └── dataset.csv
 ├── scripts/
-│   └── analisis_datos.py
+│   └── analisis.py
 ├── resultados/
-│   └── grafico_resultados.png
+│   └── evolucion_temperatura.png
 ├── README.md
 └── .gitignore
+```
 
 ---
 
@@ -67,7 +68,8 @@ El proyecto utiliza rutas relativas, por lo que el script debe ejecutarse posici
 
 ---
 
-## Decisiones de Diseño y Análisis Crítico (Erik Riberi)
-1. **Sanitización del Separador Decimal:** Se detectó que el archivo fuente `dataset.csv` provisto presentaba las anomalías térmicas utilizando la coma (`,`) como separador de decimales. Se implementó una lógica de conversión dinámica en el script (`.str.replace(',', '.')`) para transformar el formato a punto decimal antes de realizar las operaciones estadísticas, evitando errores de ejecución (*TypeError*).
-2. **Uso de Rutas Relativas para Reproducibilidad:** Se descartó el uso de rutas absolutas locales del entorno de Colab. Al definir rutas relativas estrictas, se asegura la total reproducibilidad del código, garantizando que cualquier integrante del equipo o la cátedra pueda clonar el repositorio y correr el flujo de punta a punta.
+## Decisiones de Diseño y Análisis Crítico
+Durante la fase de desarrollo técnico e ingeniería de datos, se tomaron dos decisiones de diseño fundamentales para garantizar el éxito del script:
 
+1. **Sanitización del Separador Decimal:** Se detectó que el archivo fuente `dataset.csv` provisto presentaba las anomalías térmicas utilizando la coma (`,`) como separador de decimales. Se implementó una lógica de conversión dinámica en el script (`.str.replace(',', '.')`) para transformar el formato a punto decimal antes de realizar las operaciones estadísticas, evitando errores de ejecución (*TypeError*).
+2. **Uso de Rutas Relativas para Reproducibilidad:** Se descartó el uso de rutas absolutas locales del entorno de Colab. Al definir rutas relativas estrictas, se asegura la total reproducibilidad del código, garantizando que cualquier integrante del equipo o la cátedra pueda clonar el repositorio y correr el flujo de punta a punta sin necesidad de reconfigurar rutas de archivos.
