@@ -1,3 +1,4 @@
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -8,7 +9,7 @@ except:
     df = pd.read_csv('datos/dataset.csv')
 
 # --- REQUERIMIENTO TÉCNICO: Conversión de coma a punto decimal ---
-# Si la columna se leyó como texto debido a las comas, reemplazamos las comas por puntos y convertimos a número
+# El dataset utiliza comas como separador decimal. Convertimos las comas a puntos para permitir el procesamiento numérico correcto mediante Pandas.
 if df['Mean'].dtype == 'object':
     df['Mean'] = df['Mean'].astype(str).str.replace(',', '.')
 
@@ -19,10 +20,11 @@ temp_promedio = df['Mean'].mean()
 temp_maxima = df['Mean'].max()
 temp_minima = df['Mean'].min()
 
-print("--- RESULTADOS CON DATASET CORREGIDO (JIRA: CLIMA-5) ---")
+print("--- RESULTADOS DEL ANÁLISIS CLIMÁTICO ---")
 print(f"Temperatura Media Promedio: {temp_promedio:.4f}°C")
 print(f"Temperatura Media Máxima: {temp_maxima:.4f}°C")
-print(f"Temperatura Media Mínima: {temp_minima:.4f}°C\n")
+print(f"Temperatura Media Mínima: {temp_minima:.4f}°C")
+print()
 
 # 3. Generar el gráfico de evolución temporal (Fuente: GCAG)
 plt.figure(figsize=(12, 6))
