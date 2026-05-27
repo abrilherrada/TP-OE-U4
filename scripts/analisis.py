@@ -1,4 +1,3 @@
-
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -8,35 +7,39 @@ try:
 except:
     df = pd.read_csv('datos/dataset.csv')
 
-# --- REQUERIMIENTO TÉCNICO: Conversión de coma a punto decimal ---
-# El dataset utiliza comas como separador decimal. Convertimos las comas a puntos para permitir el procesamiento numérico correcto mediante Pandas.
+# --- SANITIZACIÓN DEL SEPARADOR DECIMAL ---
 if df['Mean'].dtype == 'object':
     df['Mean'] = df['Mean'].astype(str).str.replace(',', '.')
 
 df['Mean'] = pd.to_numeric(df['Mean'])
 
-# 2. Calcular los indicadores estadísticos reales
-temp_promedio = df['Mean'].mean()
-temp_maxima = df['Mean'].max()
-temp_minima = df['Mean'].min()
+# --- REQUERIMIENTO TÉCNICO: Sumar Ordenada al Origen ---
+# Definimos la temperatura media promedio histórica como base de referencia (14.0°C)
+ordenada_origen = 14.0
+df['Mean_Real'] = df['Mean'] + ordenada_origen
 
-print("--- RESULTADOS DEL ANÁLISIS CLIMÁTICO ---")
-print(f"Temperatura Media Promedio: {temp_promedio:.4f}°C")
-print(f"Temperatura Media Máxima: {temp_maxima:.4f}°C")
-print(f"Temperatura Media Mínima: {temp_minima:.4f}°C")
-print()
+# 2. Calcular los indicadores estadísticos en base a los valores reales
+temp_promedio = df['Mean_Real'].mean()
+temp_maxima = df['Mean_Real'].max()
+temp_minima = df['Mean_Real'].min()
 
-# 3. Generar el gráfico de evolución temporal (Fuente: GCAG)
+print("--- RESULTADOS CON VALORES REALES (ORDENADA: 14.0°C) ---")
+print(f"Temperatura Real Promedio Histórica: {temp_promedio:.4f}°C")
+print(f"Temperatura Real Máxima Registrada: {temp_maxima:.4f}°C")
+print(f"Temperatura Real Mínima Registrada: {temp_minima:.4f}°C\n")
+
+# 3. Generar el gráfico de evolución temporal con valores reales (Fuente: GCAG)
 plt.figure(figsize=(12, 6))
 df_filtrado = df[df['Source'] == 'GCAG'].sort_values('Year')
 
-plt.plot(df_filtrado['Year'], df_filtrado['Mean'], marker='.', color='darkred', linestyle='-', linewidth=1)
-plt.title('Evolución de la Temperatura Media Global (Dataset Sanitizado)')
+# Graficamos la nueva columna de valores reales
+plt.plot(df_filtrado['Year'], df_filtrado['Mean_Real'], marker='.', color='darkblue', linestyle='-', linewidth=1)
+plt.title('Evolución de la Temperatura Media Global Absoluta (Valores Reales)')
 plt.xlabel('Año')
-plt.ylabel('Anomalía Térmica (°C)')
+plt.ylabel('Temperatura Global Real (°C)')
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.tight_layout()
 
 # 4. Guardar el gráfico en la carpeta de resultados
 plt.savefig('resultados/evolucion_temperatura.png')
-print("¡Gráfico guardado con éxito en 'resultados/evolucion_temperatura.png'!")
+print("¡Gráfico de valores reales guardado con éxito en 'resultados/evolucion_temperatura.png'!")
